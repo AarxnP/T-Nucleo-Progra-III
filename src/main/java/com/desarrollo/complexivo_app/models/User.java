@@ -2,7 +2,10 @@ package com.desarrollo.complexivo_app.models;
 
 import jakarta.persistence.*;
 
-@Entity(name="users")
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(name = "users")
 public class User {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +16,11 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
+    //Relación
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<Role>();
 
     public Long getId() {
         return id;
@@ -60,5 +68,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

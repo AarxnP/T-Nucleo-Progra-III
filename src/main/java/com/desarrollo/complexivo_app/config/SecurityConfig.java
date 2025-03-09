@@ -26,10 +26,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.formLogin((FormLoginConfigurer<HttpSecurity> form) -> form.loginPage("/login").permitAll());
+        http.formLogin((FormLoginConfigurer<HttpSecurity> form) -> form.loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .permitAll());
         http.authorizeHttpRequests(( authorizer)-> authorizer
                 .requestMatchers("/login", "/register").permitAll()
+                .requestMatchers("/").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated());
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+        );
         return http.build();
     }
 
