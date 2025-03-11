@@ -23,10 +23,10 @@ public class UserService {
     public User save(User user){
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         //Buscar Rol, sino crearlo
-        Role userRole=roleRepository.findByName("ROLE_USER").
+        Role userRole=roleRepository.findByName("ROLE_ADMIN").
                 orElseGet(()->{
                     Role newRole= new Role();
-                    newRole.setName("ROLE_USER");
+                    newRole.setName("ROLE_ADMIN");
                     return roleRepository.save(newRole);
                 });
         user.getRoles().add(userRole);

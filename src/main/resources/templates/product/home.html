@@ -21,7 +21,7 @@
         <h1 class="display 4">PRODUCTOS</h1>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" th:if="${role != 'ROLE_USER'}">
         <a th:href="@{/add}" class="btn btn-success">Agregar Producto</a>
     </div>
 
@@ -34,20 +34,25 @@
             <th>Categoria</th>
             <th>Stock</th>
             <th>Descripción</th>
-            <th class="text-center">Opciones</th>
+            <th class="text-center" th:if="${role != 'ROLE_USER'}">Opciones</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>Laptop</td>
-            <td>1500</td>
-            <td>Computadoras</td>
-            <td>20</td>
-            <td>Laptop con RAm de 16 GB</td>
-            <td class="text-center">
-                <button class="btn btn-warning btn-sm">Editar</button>
-                <button class="btn btn-danger btn-sm">Eliminar</button>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category.name}"></td>
+            <td th:text="${product.stock}"></td>
+            <td th:text="${product.description}"></td>
+            <td class="text-center" th:if="${role != 'ROLE_USER'}">
+                <div class="d-inline-flex gap-2">
+                    <a class="btn btn-warning btn-sm" th:href="@{/product/edit/{id}(id=${product.id})}">Editar</a>
+                    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post"
+                          onsubmit="return confirm('¿Seguro que quiere eliminar este producto?')">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>

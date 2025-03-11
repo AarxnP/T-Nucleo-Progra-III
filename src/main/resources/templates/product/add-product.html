@@ -19,7 +19,7 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">AGREGAR PRODUCTO</h1>
 
-    <form th:action="@{/add}" th:object="${product}" method="post">
+    <form th:action="@{${product.id == null} ? '/add' : '/product/edit/'+${product.id}}" th:object="${product}" method="post">
         <div>
             <label for="name" class="form-label">Nombre</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" required>
